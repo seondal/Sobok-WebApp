@@ -54,7 +54,7 @@ function getTodayDate() {
   return dateString;
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context: any) => {
   // 로그인
   const signInResponse = await (
     await fetch(socialSignIn, {
@@ -66,14 +66,13 @@ export const getServerSideProps = async () => {
     })
   ).json();
   const signInData = signInResponse.data;
-  const accesstoken = signInData.accesstoken;
 
   // 날짜별 내 약 조회
   const scheduleDetailResponse = await (
-    await fetch(getScheduleDetail + "?date=" + getTodayDate(), {
+    await fetch(getScheduleDetail + "?date=" + context.query.date, {
       method: "GET",
       headers: {
-        accesstoken: accesstoken,
+        accesstoken: signInData.accesstoken,
       },
     })
   ).json();
