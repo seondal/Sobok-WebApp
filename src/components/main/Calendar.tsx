@@ -20,9 +20,11 @@ export const MonthCalendar = ({ selected }: any) => {
   return (
     <div>
       {calendar.map((day) => (
-        <Link href={`/main?date=${day.full}`}>
-          <div>{day.date}</div>
-        </Link>
+        <div key={day.full}>
+          <Link href={`/main?date=${day.full}`}>
+            <span>{day.date}</span>
+          </Link>
+        </div>
       ))}
     </div>
   );
