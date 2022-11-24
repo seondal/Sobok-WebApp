@@ -1,9 +1,51 @@
 import moment from "moment";
-import { useState } from "react";
+import Link from "next/link";
+import React, { useState } from "react";
+
+export const MonthCalendar = ({ selected }: any) => {
+  let calendar: any[] = [];
+
+  let date = selected.clone().startOf("month");
+
+  for (let i = 0; i < selected.clone().endOf("month").date(); i++) {
+    const data = {
+      full: date.format("YYYY-MM-DD"),
+      date: date.format("DD"),
+      day: date.day(),
+    };
+    calendar = calendar.concat(data);
+    date.add(1, "day");
+  }
+
+  return (
+    <div>
+      {calendar.map((day) => (
+        <Link href={`/main?date=${day.full}`}>
+          <div>{day.date}</div>
+        </Link>
+      ))}
+    </div>
+  );
+};
 
 export default function Calendar() {
-  console.log(moment());
-  const [mmoment, setMmoment] = useState();
+  const [selected, setSelected] = useState(moment());
 
-  return <div className="container">달력달력</div>;
+  function moveNextMonth() {
+    setSelected(selected.clone().add(1, "month"));
+  }
+  function movePrevMonth() {
+    setSelected(selected.clone().subtract(1, "month"));
+  }
+
+  return (
+    <div className="container">
+      <div className="header">
+        <button onClick={movePrevMonth}>이전달</button>
+        <span>{selected.format("MM월")}</span>
+        <button onClick={moveNextMonth}>다음달</button>
+        <MonthCalendar selected={selected} />
+      </div>
+    </div>
+  );
 }
