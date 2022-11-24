@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getScheduleDetail, socialSignIn } from "../../src/api";
+import { getScheduleDetail, socialSignIn } from "../../src/api/api";
 
 interface MainProps {
   scheduleDetailData: ScheduleDetail[];
@@ -7,7 +7,7 @@ interface MainProps {
 interface ScehduleCalendar {
   scheduleDate: Date;
   scheduleCount: number;
-  isCheckCoung: number;
+  isCheckCount: number;
   isComplete: string;
 }
 interface ScheduleDetail {
@@ -29,6 +29,7 @@ export default function Main({ scheduleDetailData }: MainProps) {
     <>
       <div className="container">
         <Link href="myinfo">My Page</Link>
+        <hr />
         {scheduleDetailData.map((data) => (
           <div key={data.scheduleTime}>
             <h2>{data.scheduleTime}</h2>
@@ -40,18 +41,6 @@ export default function Main({ scheduleDetailData }: MainProps) {
       </div>
     </>
   );
-}
-
-function getTodayDate() {
-  var today = new Date();
-
-  var year = today.getFullYear();
-  var month = ("0" + (today.getMonth() + 1)).slice(-2);
-  var day = ("0" + today.getDate()).slice(-2);
-
-  var dateString = year + "-" + month + "-" + day;
-
-  return dateString;
 }
 
 export const getServerSideProps = async (context: any) => {
