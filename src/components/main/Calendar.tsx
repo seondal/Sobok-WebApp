@@ -19,13 +19,24 @@ export const MonthCalendar = ({ selected }: any) => {
 
   return (
     <div>
-      {calendar.map((day) => (
-        <div key={day.full}>
-          <Link href={`/main?date=${day.full}`}>
-            <span>{day.date}</span>
-          </Link>
-        </div>
-      ))}
+      <table border={1}>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <tr>
+          {calendar.map((day) => (
+            <td key={day.full}>
+              <Link href={`/main?date=${day.full}`}>
+                <span>{day.date}</span>
+              </Link>
+            </td>
+          ))}
+        </tr>
+      </table>
     </div>
   );
 };
