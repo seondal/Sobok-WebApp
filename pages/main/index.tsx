@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getScheduleDetail, socialSignIn } from "../../src/api/api";
+import Calendar from "../../src/components/main/Calendar";
 
 interface MainProps {
   scheduleDetailData: ScheduleDetail[];
@@ -29,6 +30,8 @@ export default function Main({ scheduleDetailData }: MainProps) {
     <>
       <div className="container">
         <Link href="myinfo">My Page</Link>
+        <hr />
+        <Calendar />
         <hr />
         {scheduleDetailData.map((data) => (
           <div key={data.scheduleTime}>
