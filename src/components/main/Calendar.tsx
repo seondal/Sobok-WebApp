@@ -2,13 +2,23 @@ import moment from "moment";
 import Link from "next/link";
 import React, { useState } from "react";
 
-export const MonthCalendar = ({ selected }: any) => {
-  let calendar: any[] = [];
+interface DateData {
+  full: string;
+  date: string;
+  day: number;
+}
+
+export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
+  let calendar: DateData[] = [];
 
   let date = selected.clone().startOf("month");
 
+  for (let i = date.day(); i > 0; i--) {
+    calendar.unshift({ full: `${i}`, date: `none`, day: i });
+  }
+
   for (let i = 0; i < selected.clone().endOf("month").date(); i++) {
-    const data = {
+    const data: DateData = {
       full: date.format("YYYY-MM-DD"),
       date: date.format("DD"),
       day: date.day(),
@@ -28,13 +38,17 @@ export const MonthCalendar = ({ selected }: any) => {
         <th>Fri</th>
         <th>Sat</th>
         <tr>
-          {calendar.map((day) => (
-            <td key={day.full}>
-              <Link href={`/main?date=${day.full}`}>
-                <span>{day.date}</span>
-              </Link>
-            </td>
-          ))}
+          {calendar.map((day) =>
+            day.date !== "none" ? (
+              <td key={day.full}>
+                <Link href={`/main?date=${day.full}`}>
+                  <span>{day.date}</span>
+                </Link>
+              </td>
+            ) : (
+              <td></td>
+            )
+          )}
         </tr>
       </table>
     </div>
