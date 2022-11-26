@@ -71,17 +71,17 @@ export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
         <tbody>
           {calendar.map((week, index) => (
             <tr key={index}>
-              {week.map((day) =>
-                day.date !== "none" ? (
-                  <td key={day.full}>
+              {week.map((day) => (
+                <td key={day.full}>
+                  {day.date !== "none" ? (
                     <Link href={`/main?date=${day.full}`}>
                       <span>{day.date}</span>
                     </Link>
-                  </td>
-                ) : (
-                  <td></td>
-                )
-              )}
+                  ) : (
+                    <></>
+                  )}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
