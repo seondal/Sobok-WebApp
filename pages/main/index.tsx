@@ -1,31 +1,14 @@
 import Link from "next/link";
 import { getScheduleDetail, socialSignIn } from "../../src/api/api";
 import Calendar from "../../src/components/main/Calendar";
+import ScheduleList from "../../src/components/main/ScheduleList";
+import { ScheduleDetail } from "../../src/interface";
 
-interface MainProps {
+export default function Main({
+  scheduleDetailData,
+}: {
   scheduleDetailData: ScheduleDetail[];
-}
-interface ScehduleCalendar {
-  scheduleDate: Date;
-  scheduleCount: number;
-  isCheckCount: number;
-  isComplete: string;
-}
-interface ScheduleDetail {
-  scheduleTime: string;
-  scheduleList: Schedule[];
-}
-interface Schedule {
-  scheduleId: number;
-  pillId: number;
-  pillName: string;
-  isCheck: boolean;
-  color: number;
-  stickerId: number[];
-  stickerTotalCount: number;
-}
-
-export default function Main({ scheduleDetailData }: MainProps) {
+}) {
   return (
     <>
       <div className="container">
@@ -33,14 +16,7 @@ export default function Main({ scheduleDetailData }: MainProps) {
         <hr />
         <Calendar />
         <hr />
-        {scheduleDetailData.map((data) => (
-          <div key={data.scheduleTime}>
-            <h2>{data.scheduleTime}</h2>
-            {data.scheduleList.map((d) => (
-              <div key={d.scheduleId}>{d.pillName}</div>
-            ))}
-          </div>
-        ))}
+        <ScheduleList scheduleDetailData={scheduleDetailData} />
       </div>
     </>
   );
@@ -64,7 +40,7 @@ export const getServerSideProps = async (context: any) => {
     await fetch(getScheduleDetail + "?date=" + context.query.date, {
       method: "GET",
       headers: {
-        accesstoken: signInData.accesstoken,
+        accesstoken: `${process.env.TEMP_ACCESS_TOKEN}`,
       },
     })
   ).json();
