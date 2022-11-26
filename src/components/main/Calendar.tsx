@@ -27,12 +27,10 @@ export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
   }
 
   // [주][날짜] 형태의 이중배열로 저장
-  let calendar: string[][] = Array.from(Array(6), () => new Array(7));
+  let calendar: DateData[][] = Array.from(Array(6), () => new Array(7));
   dates.forEach((date, index) => {
-    calendar[Math.floor(index / 7)][index % 7] = date.date;
+    calendar[Math.floor(index / 7)][index % 7] = date;
   });
-
-  console.table(calendar);
 
   return (
     <div>
@@ -44,17 +42,21 @@ export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
         <th>Thu</th>
         <th>Fri</th>
         <th>Sat</th>
-        {dates.map((day) => {
-          return day.date !== "none" ? (
-            <td key={day.full}>
-              <Link href={`/main?date=${day.full}`}>
-                <span>{day.date}</span>
-              </Link>
-            </td>
-          ) : (
-            <td></td>
-          );
-        })}
+        {calendar.map((week, index) => (
+          <tr key={index}>
+            {week.map((day) =>
+              day.date !== "none" ? (
+                <td key={day.full}>
+                  <Link href={`/main?date=${day.full}`}>
+                    <span>{day.date}</span>
+                  </Link>
+                </td>
+              ) : (
+                <td></td>
+              )
+            )}
+          </tr>
+        ))}
       </table>
     </div>
   );
