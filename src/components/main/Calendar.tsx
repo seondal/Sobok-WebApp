@@ -57,28 +57,34 @@ export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
   return (
     <div>
       <table border={1}>
-        <th>Sun</th>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thu</th>
-        <th>Fri</th>
-        <th>Sat</th>
-        {calendar.map((week, index) => (
-          <tr key={index}>
-            {week.map((day) =>
-              day.date !== "none" ? (
-                <td key={day.full}>
-                  <Link href={`/main?date=${day.full}`}>
-                    <span>{day.date}</span>
-                  </Link>
-                </td>
-              ) : (
-                <td></td>
-              )
-            )}
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {calendar.map((week, index) => (
+            <tr key={index}>
+              {week.map((day) =>
+                day.date !== "none" ? (
+                  <td key={day.full}>
+                    <Link href={`/main?date=${day.full}`}>
+                      <span>{day.date}</span>
+                    </Link>
+                  </td>
+                ) : (
+                  <td></td>
+                )
+              )}
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
