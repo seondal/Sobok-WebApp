@@ -4,11 +4,10 @@ import Calendar from "../../src/components/main/Calendar";
 import ScheduleList from "../../src/components/main/ScheduleList";
 import { ScheduleDetail } from "../../src/interface";
 
-export default function Main({
-  scheduleDetailData,
-}: {
+interface MainProps {
   scheduleDetailData: ScheduleDetail[];
-}) {
+}
+export default function Main({ scheduleDetailData }: MainProps) {
   return (
     <>
       <div className="container">

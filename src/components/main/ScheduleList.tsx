@@ -1,10 +1,11 @@
 import { ScheduleDetail } from "../../interface";
 
+interface ScheduleListProps {
+  scheduleDetailData: ScheduleDetail[];
+}
 export default function ScheduleList({
   scheduleDetailData,
-}: {
-  scheduleDetailData: ScheduleDetail[];
-}) {
+}: ScheduleListProps) {
   return (
     <div className="container">
       {scheduleDetailData.map((data) => (
