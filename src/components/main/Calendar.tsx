@@ -7,6 +7,28 @@ interface DateData {
   date: string;
 }
 
+export default function Calendar() {
+  const [selected, setSelected] = useState(moment());
+
+  function moveNextMonth() {
+    setSelected(selected.clone().add(1, "month"));
+  }
+  function movePrevMonth() {
+    setSelected(selected.clone().subtract(1, "month"));
+  }
+
+  return (
+    <div className="container">
+      <div className="header">
+        <button onClick={movePrevMonth}>이전달</button>
+        <span>{selected.format("MM월")}</span>
+        <button onClick={moveNextMonth}>다음달</button>
+        <MonthCalendar selected={selected} />
+      </div>
+    </div>
+  );
+}
+
 export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
   let date = selected.clone().startOf("month");
 
@@ -61,25 +83,3 @@ export const MonthCalendar = ({ selected }: { selected: moment.Moment }) => {
     </div>
   );
 };
-
-export default function Calendar() {
-  const [selected, setSelected] = useState(moment());
-
-  function moveNextMonth() {
-    setSelected(selected.clone().add(1, "month"));
-  }
-  function movePrevMonth() {
-    setSelected(selected.clone().subtract(1, "month"));
-  }
-
-  return (
-    <div className="container">
-      <div className="header">
-        <button onClick={movePrevMonth}>이전달</button>
-        <span>{selected.format("MM월")}</span>
-        <button onClick={moveNextMonth}>다음달</button>
-        <MonthCalendar selected={selected} />
-      </div>
-    </div>
-  );
-}
