@@ -1,4 +1,4 @@
-import { getMyPillList } from "../../src/api/api";
+import { getMyPillList } from "../../src/api";
 
 interface MyInfoProps {
   myPillListData: Pill[];

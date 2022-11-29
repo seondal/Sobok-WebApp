@@ -1,10 +1,9 @@
+import { socialSignIn } from "../../src/api";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 import firebase from "firebase/app";
 import "firebase/messaging";
-import { useRouter } from "next/router";
-import { socialSignIn } from "../../src/api/api";
-import { getAuthCode } from "../../src/api/kakaoApi";
-// https://firebase.google.com/docs/web/setup#available-libraries
-
+import { useEffect } from "react";
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
@@ -14,53 +13,63 @@ export const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FB_APPP_ID,
   measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
 };
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+export async function getToken() {
+  const messaging = firebase.messaging();
+  const token = await messaging.getToken({
+    vapidKey: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_VAPID_KEY,
+  });
 
-const signInKakao = async (socialId: string, deviceToken: string) => {
-  // 로그인
-  const signInResponse = await (
-    await fetch(socialSignIn, {
-      method: "GET",
-      headers: {
-        socialId: socialId,
-        deviceToken: deviceToken,
-      },
-    })
-  ).json();
-  const signInData = signInResponse.data;
-  console.log(signInData);
-};
-
-const getFcmToken = () => {
-  if (!firebase.apps.length) {
-    const firebaseApp = firebase.initializeApp(firebaseConfig);
-    const firebaseMessaging = firebaseApp.messaging();
-    firebaseMessaging
-      .requestPermission()
-      .then(() => {
-        return firebaseMessaging.getToken(); // 등록 토큰 받기
-      })
-      .then(function (token) {
-        console.log(token);
-        return token;
-      })
-      .catch(function (error) {
-        console.log("FCM Error : ", error);
-      });
-  }
-};
+  return token;
+}
 
 export default function Login() {
-  const { query } = useRouter();
+  const session = useSession();
 
-  if (typeof query.code === "string") {
-    signInKakao(query.code, `${getFcmToken()}`);
-  }
+  useEffect(() => {
+    async function getMessageToken() {
+      const token = await getToken();
+      console.log(token);
+    }
+    getMessageToken();
+  }, []);
+
+  const clickTosignIn = async () => {
+    signIn("kakao");
+    const socialId = session.data?.user.userId;
+
+    // const signInResponse = await (
+    //   await fetch(socialSignIn, {
+    //     method: "GET",
+    //     headers: {
+    //       socialId: socialId,
+    //       deviceToken: deviceToken,
+    //     },
+    //   })
+    // ).json();
+    // const signInData = signInResponse.data;
+    // if (signInData.isNew) {
+    //   // 회원가입
+    //   router.push({
+    //     pathname: "/login/signup",
+    //     query: {
+    //       socialId: socialId,
+    //       deviceToken: deviceToken,
+    //     },
+    //   });
+    // } else {
+    //   // 로그인 성공
+    //   console.log(signInData);
+    // }
+  };
 
   return (
     <>
       <div className="container">
-        <a href={getAuthCode}>카카오 로그인</a>
-        <button>Apple로 로그인</button>
+        <button onClick={clickTosignIn}>카카오 로그인</button>
+        <button onClick={() => signOut()}>Apple로 로그인</button>
       </div>
     </>
   );
