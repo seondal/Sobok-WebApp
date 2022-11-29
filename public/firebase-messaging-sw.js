@@ -2,13 +2,13 @@ importScripts("https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js");
 
 firebase.initializeApp({
-  apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FB_APPP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
+  apiKey: "AIzaSyAF8yzRwU-k3yWppNxcc8jA3iEdw_n0Uck",
+  authDomain: "soboksobok-564b3.firebaseapp.com",
+  projectId: "soboksobok-564b3",
+  storageBucket: "soboksobok-564b3.appspot.com",
+  messagingSenderId: "979941539519",
+  appId: "1:979941539519:web:4b465dce43afe76707900a",
+  measurementId: "G-28YMMZB5Y6",
 });
 
 const messaging = firebase.messaging();
