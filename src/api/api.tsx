@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const socialSignUp = `${BASE_URL}/auth/signup`;
 export const socialSignIn = `${BASE_URL}/auth/signin`;
