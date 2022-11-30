@@ -59,7 +59,7 @@ export default function Login() {
       const deviceToken = fcmToken;
       socialSignIn(socialId, deviceToken);
     }
-  });
+  }, [session.data, router]);
 
   return (
     <>
