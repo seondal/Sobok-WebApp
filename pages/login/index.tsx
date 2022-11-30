@@ -3,40 +3,20 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import moment from "moment";
-
-import firebase from "firebase/app";
-import "firebase/messaging";
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FB_APPP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
-};
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-export async function getToken() {
-  const messaging = firebase.messaging();
-  const token = await messaging.getToken();
-  return token;
-}
+import { getFcmToken } from "../../src/firebase";
 
 export default function Login() {
   const router = useRouter();
   const session = useSession();
-  const [fcmToken, setFcmToken] = useState("");
 
   // deviceToken (fcmToken) 받아오기
+  const [fcmToken, setFcmToken] = useState("");
   useEffect(() => {
-    async function getMessageToken() {
-      const token = await getToken();
+    async function getDeviceToken() {
+      const token = await getFcmToken();
       setFcmToken(token);
     }
-    getMessageToken();
+    getDeviceToken();
   }, []);
 
   // signIn api 연결
@@ -51,8 +31,7 @@ export default function Login() {
       })
     ).json();
     const signInData = signInResponse.data;
-
-    if (signInData.isNew) {
+    if (signInData?.isNew) {
       // 회원가입
       router.push({
         pathname: "/login/signup",
