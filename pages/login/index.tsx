@@ -31,7 +31,8 @@ export default function Login() {
       })
     ).json();
     const signInData = signInResponse.data;
-    if (signInData?.isNew) {
+
+    if (signInData && signInData.isNew) {
       // 회원가입
       router.push({
         pathname: "/login/signup",

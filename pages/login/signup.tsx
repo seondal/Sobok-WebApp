@@ -1,10 +1,10 @@
+import moment from "moment";
 import { useRouter } from "next/router";
-import { socialSignUp } from "../../src/api";
+import { postSignUp } from "../../src/api";
 
 interface signUpProps {
   socialId: string;
   deviceToken: string;
-  email: string;
   username: string;
 }
 
@@ -12,29 +12,31 @@ export default function SignUp() {
   const router = useRouter();
   const { socialId, deviceToken } = router.query;
 
-  const signUp = async ({
-    socialId,
-    deviceToken,
-    email,
-    username,
-  }: signUpProps) => {
+  // signUp api 연결
+  async function signUp(signUpRequestBody: signUpProps) {
     const signUpResponse = await (
-      await fetch(socialSignUp, {
+      await fetch(postSignUp, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signUpRequestBody),
       })
     ).json();
-    const signUpData = signUpResponse.data;
-    console.log(signUpData);
-  };
+    console.log(signUpResponse.data.accesstoken);
+    router.push({
+      pathname: "/main",
+      query: {
+        date: moment().format("YYYY-MM-DD"),
+      },
+    });
+  }
 
   function clickToSignUp() {
-    const signUpBody = {
+    const signUpRequestBody = {
       socialId: `${socialId}`,
-      deviceToken: `${deviceToken}`,
-      email: "www",
       username: "sss",
+      deviceToken: `${deviceToken}`,
     };
-    signUp(signUpBody);
+    signUp(signUpRequestBody);
   }
 
   return (
