@@ -22,7 +22,7 @@ export default function SignUp() {
       })
     ).json();
     console.log(signUpResponse.data.accesstoken);
-    router.push({
+    router.replace({
       pathname: "/main",
       query: {
         date: moment().format("YYYY-MM-DD"),

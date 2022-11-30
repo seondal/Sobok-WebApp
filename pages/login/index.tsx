@@ -34,7 +34,7 @@ export default function Login() {
 
     if (signInData && signInData.isNew) {
       // 회원가입
-      router.push({
+      router.replace({
         pathname: "/login/signup",
         query: {
           socialId: socialId,
@@ -43,7 +43,7 @@ export default function Login() {
       });
     } else {
       // 로그인 성공
-      router.push({
+      router.replace({
         pathname: "/main",
         query: {
           date: moment().format("YYYY-MM-DD"),
@@ -53,11 +53,13 @@ export default function Login() {
   }
 
   // 소셜로그인 완료 후 실행
-  if (session.data) {
-    const socialId = `Kakao@${session.data?.user.userId}`;
-    const deviceToken = fcmToken;
-    socialSignIn(socialId, deviceToken);
-  }
+  useEffect(() => {
+    if (session.data) {
+      const socialId = `Kakao@${session.data?.user.userId}`;
+      const deviceToken = fcmToken;
+      socialSignIn(socialId, deviceToken);
+    }
+  });
 
   return (
     <>

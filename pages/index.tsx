@@ -9,7 +9,7 @@ export default function Home() {
       <button onClick={() => signOut()}>logout</button>
       <button
         onClick={() => {
-          router.push("login");
+          router.replace("login");
         }}
       >
         go to login
