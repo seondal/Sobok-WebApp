@@ -31,8 +31,9 @@ export default function Login() {
       })
     ).json();
     const signInData = signInResponse.data;
+    console.log(signInResponse);
 
-    if (signInData && signInData.isNew) {
+    if (signInResponse.success && signInData.isNew) {
       // 회원가입
       router.replace({
         pathname: "/login/signup",
@@ -41,7 +42,7 @@ export default function Login() {
           deviceToken: deviceToken,
         },
       });
-    } else {
+    } else if (signInResponse.success && !signInData.isNew) {
       // 로그인 성공
       router.replace({
         pathname: "/main",
@@ -53,13 +54,11 @@ export default function Login() {
   }
 
   // 소셜로그인 완료 후 실행
-  useEffect(() => {
-    if (session.data) {
-      const socialId = `Kakao@${session.data?.user.userId}`;
-      const deviceToken = fcmToken;
-      socialSignIn(socialId, deviceToken);
-    }
-  }, [session.data, router]);
+  if (session.data) {
+    const socialId = `Kakao@${session.data?.user.userId}`;
+    const deviceToken = fcmToken;
+    socialSignIn(socialId, deviceToken);
+  }
 
   return (
     <>
