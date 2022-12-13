@@ -1,4 +1,5 @@
-import { getMyPillList } from "../../src/api/api";
+import Link from "next/link";
+import { getMyPillList } from "../../src/api";
 
 interface MyInfoProps {
   myPillListData: Pill[];
@@ -12,6 +13,7 @@ interface Pill {
 export default function MyInfo({ myPillListData }: MyInfoProps) {
   return (
     <div className="container">
+      <Link href="/myinfo/setting">설정</Link>
       {myPillListData.map((pill) => (
         <div key={pill.id}>
           {pill.color} {pill.pillName}

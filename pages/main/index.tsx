@@ -1,13 +1,18 @@
+import { unstable_getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
-import { getScheduleDetail, socialSignIn } from "../../src/api/api";
+import { getScheduleDetail } from "../../src/api";
 import Calendar from "../../src/components/main/Calendar";
 import ScheduleList from "../../src/components/main/ScheduleList";
 import { ScheduleDetail } from "../../src/interface";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 interface MainProps {
   scheduleDetailData: ScheduleDetail[];
+  session: any;
 }
-export default function Main({ scheduleDetailData }: MainProps) {
+
+export default function Main({ scheduleDetailData, session }: MainProps) {
   return (
     <>
       <div className="container">
@@ -22,18 +27,11 @@ export default function Main({ scheduleDetailData }: MainProps) {
 }
 
 export const getServerSideProps = async (context: any) => {
-  // 로그인
-  const signInResponse = await (
-    await fetch(socialSignIn, {
-      method: "GET",
-      headers: {
-        socialId: `${process.env.TEMP_SOCIAL_ID}`,
-        deviceToken: `${process.env.TEMP_FCM_TOKEN}`,
-      },
-    })
-  ).json();
-  const signInData = signInResponse.data;
-
+  const session = getSession();
+  console.log(
+    "🚀 ~ file: index.tsx:33 ~ getServerSideProps ~ session",
+    session
+  );
   // 날짜별 내 약 조회
   const scheduleDetailResponse = await (
     await fetch(getScheduleDetail + "?date=" + context.query.date, {
@@ -46,6 +44,8 @@ export const getServerSideProps = async (context: any) => {
   const scheduleDetailData = scheduleDetailResponse.data;
 
   return {
-    props: { scheduleDetailData },
+    props: {
+      scheduleDetailData,
+    },
   };
 };
