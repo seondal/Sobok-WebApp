@@ -31,7 +31,6 @@ export default function Login() {
       })
     ).json();
     const signInData = signInResponse.data;
-    console.log(signInResponse);
 
     if (signInResponse.success && signInData.isNew) {
       // 회원가입
